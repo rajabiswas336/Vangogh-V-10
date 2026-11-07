@@ -1,0 +1,282 @@
+/* ==========================================================================
+   VANGOGH "SIGNAL" THEME — futuristic holographic layer (2026-10-21)
+   Built from the owner's reference board (Reference/ folder): deep space,
+   glass panels, a glowing orb, neon edges, numbered category lists.
+   Colours come from the official logo gradient: indigo #2E3192 -> electric
+   blue #0050E8, with a violet/cyan glow for light only (never for text).
+   Loaded last, so it overrides earlier styles without deleting them.
+   To switch it off: remove the futuristic.css import in App.jsx.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+  --holo-bg: #05060f;
+  --holo-bg-2: #0a0c1f;
+  --holo-indigo: #2e3192;
+  --holo-electric: #0050e8;
+  --holo-neon: #4d86ff;
+  --holo-violet: #8a6bff;
+  --holo-cyan: #6fe3ff;
+  --holo-text: #eef1ff;
+  --holo-muted: #aab3d9;
+  --holo-line: rgba(150, 170, 255, .16);
+  --holo-glass: linear-gradient(160deg, rgba(255,255,255,.075), rgba(255,255,255,.02));
+  --holo-edge: linear-gradient(135deg, rgba(111,227,255,.55), rgba(77,134,255,.18) 35%, rgba(138,107,255,.12) 65%, rgba(138,107,255,.5));
+
+  /* Re-map the original tokens so every existing component turns dark. */
+  --surface: var(--holo-bg);
+  --paper: rgba(255, 255, 255, .03);
+  --ink: var(--holo-text);
+  --ink-soft: var(--holo-muted);
+  --blue: var(--holo-neon);
+  --blue-light: #8fb2ff;
+  --violet: var(--holo-violet);
+  --violet-light: #c3b3ff;
+  --line: var(--holo-line);
+  --line-dark: var(--holo-line);
+  --shadow-soft: 0 24px 70px rgba(0, 0, 0, .45);
+  --focus-ring: var(--holo-cyan);
+}
+
+html { background: var(--holo-bg); }
+body {
+  background:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(46, 49, 146, .55), transparent 70%),
+    radial-gradient(50rem 36rem at -10% 40%, rgba(0, 80, 232, .22), transparent 70%),
+    radial-gradient(40rem 30rem at 70% 120%, rgba(138, 107, 255, .18), transparent 70%),
+    var(--holo-bg) !important;
+  background-attachment: fixed !important;
+  color: var(--holo-text);
+}
+::selection { background: rgba(77, 134, 255, .45); color: #fff; }
+h1, h2, h3, h4 { color: var(--holo-text); }
+p { color: inherit; }
+a { color: #9fc0ff; }
+
+/* ---- Backdrop: stars, grid and cursor light (HoloBackdrop.jsx) ---------- */
+.holo-backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.holo-backdrop__stars {
+  position: absolute; inset: -50%;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1px 1px at 120px 90px, rgba(190,210,255,.45), transparent 60%),
+    radial-gradient(1.4px 1.4px at 200px 160px, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(1px 1px at 300px 40px, rgba(170,190,255,.4), transparent 60%);
+  background-size: 340px 220px;
+  animation: holo-drift 160s linear infinite;
+  opacity: .55;
+}
+.holo-backdrop__grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(120,150,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(120,150,255,.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+}
+.holo-backdrop__cursor {
+  position: absolute; left: 0; top: 0; width: 640px; height: 640px; margin: -320px 0 0 -320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,134,255,.16), rgba(138,107,255,.07) 40%, transparent 68%);
+  transform: translate3d(var(--cx, 50vw), var(--cy, 30vh), 0);
+  transition: transform .5s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes holo-drift { to { transform: translate3d(-340px, -220px, 0); } }
+
+/* ---- Header: floating glass bar ---------------------------------------- */
+:root .header {
+  background: rgba(6, 8, 20, .55) !important;
+  border-bottom: 1px solid var(--holo-line) !important;
+  box-shadow: 0 1px 0 rgba(111,227,255,.08), 0 20px 50px rgba(0,0,0,.35) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+:root .nav a { color: var(--holo-muted); font-family: var(--sans); letter-spacing: .01em; }
+:root .nav a:hover, :root .nav a[aria-current] { color: #fff; }
+
+/* ---- Buttons: neon pills ----------------------------------------------- */
+:root .btn--primary {
+  background: linear-gradient(135deg, var(--holo-indigo), var(--holo-electric) 60%, var(--holo-neon)) !important;
+  color: #fff !important; border: 1px solid rgba(160,190,255,.35) !important;
+  box-shadow: 0 0 0 1px rgba(77,134,255,.25), 0 10px 34px rgba(0,80,232,.45), inset 0 1px 0 rgba(255,255,255,.25) !important;
+}
+:root .btn--primary:hover { box-shadow: 0 0 0 1px rgba(111,227,255,.5), 0 14px 46px rgba(0,80,232,.65), 0 0 60px rgba(138,107,255,.35), inset 0 1px 0 rgba(255,255,255,.3) !important; }
+:root .btn--ghost {
+  background: rgba(255,255,255,.04) !important; color: var(--holo-text) !important;
+  border: 1px solid rgba(160,180,255,.28) !important; backdrop-filter: blur(10px);
+}
+:root .btn--ghost:hover { border-color: rgba(111,227,255,.6) !important; box-shadow: 0 0 30px rgba(77,134,255,.3) !important; }
+:root .btn--gold { box-shadow: 0 10px 34px rgba(213,181,106,.25); }
+:root .chip { background: rgba(255,255,255,.04); border-color: var(--holo-line); color: var(--holo-muted); }
+:root .chip[aria-pressed='true'], :root .chip.is-active { background: linear-gradient(135deg, var(--holo-indigo), var(--holo-electric)) !important; border-color: rgba(160,190,255,.45) !important; color: #fff !important; }
+
+/* ---- Glass surfaces (cards, panels, tiers) ----------------------------- */
+:root .card, :root .service-card, :root .pricing-tier, :root .pricing-service, :root .pricing-quote,
+:root .pricing-nav, :root .work-panel, :root .studio-note, :root .process-step, :root .category-reel__panel {
+  position: relative;
+  background: var(--holo-glass) !important;
+  border: 1px solid var(--holo-line) !important;
+  color: var(--holo-text);
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-color .35s ease, box-shadow .35s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+}
+:root .card::after, :root .service-card::after, :root .pricing-tier::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: var(--holo-edge);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity .35s ease;
+}
+:root .card:hover, :root .service-card:hover, :root .pricing-tier:hover, :root .process-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,.7), 0 0 50px -10px rgba(77,134,255,.35), inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+:root .card:hover::after, :root .service-card:hover::after, :root .pricing-tier:hover::after { opacity: 1; }
+:root .pricing-tier--standard { border-color: rgba(111,227,255,.35) !important; box-shadow: 0 0 0 1px rgba(77,134,255,.25), 0 30px 80px -30px rgba(0,80,232,.55) !important; }
+:root .pricing-tier--standard::after { opacity: .8; }
+
+/* ---- Sections: one continuous dark space ------------------------------- */
+:root .section, :root .services-overview, :root .pricing-preview, :root .process-section,
+:root .experts-section, :root .work-section, :root #work, :root .cta {
+  background: transparent !important;
+  color: var(--holo-text);
+  border-color: var(--holo-line) !important;
+}
+:root .section-head__title, :root .section h2 { letter-spacing: -.03em; }
+:root .eyebrow, :root .hero__note, :root .service-card__index, :root .process-step__number, :root .footer__h,
+:root .pricing-tier h4, :root .expert__role, :root .category-reel__caption-top {
+  font-family: var(--mono) !important; letter-spacing: .16em !important; text-transform: uppercase;
+}
+:root .service-card__index, :root .process-step__number { color: var(--holo-cyan) !important; text-shadow: 0 0 18px rgba(111,227,255,.45); }
+:root .eyebrow { color: #9fc0ff !important; }
+:root .fineprint, :root .pricing-disclaimer, :root .hero__lede, :root .service-card p, :root .process-step p { color: var(--holo-muted) !important; }
+
+/* Process: glowing timeline feel */
+:root .process-steps { position: relative; }
+:root .process-steps::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -1.2rem; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(111,227,255,.6), rgba(138,107,255,.6), transparent);
+  box-shadow: 0 0 18px rgba(77,134,255,.6);
+}
+
+/* Experts: portraits in neon frames */
+:root .card--expert { overflow: hidden; }
+:root .expert__portrait { filter: saturate(1.05) contrast(1.04); }
+:root .card--expert:hover .expert__portrait { filter: saturate(1.15) contrast(1.06); }
+
+/* CTA: the closing signal */
+:root .cta {
+  position: relative; overflow: hidden;
+  background: radial-gradient(40rem 22rem at 50% 0%, rgba(0,80,232,.35), transparent 70%), radial-gradient(30rem 20rem at 80% 100%, rgba(138,107,255,.25), transparent 70%) !important;
+  border-top: 1px solid var(--holo-line);
+}
+
+/* Footer: stays in the same space, no jump to a light page */
+:root .footer {
+  background: linear-gradient(180deg, transparent, rgba(5,6,15,.9)) !important;
+  border-top: 1px solid var(--holo-line) !important;
+  color: var(--holo-muted);
+}
+:root .footer a { color: var(--holo-text); }
+:root .skip { background: var(--holo-electric); color: #fff; }
+
+/* ---- Hero: holographic stage ------------------------------------------- */
+:root .hero { background: transparent !important; border-bottom-color: var(--holo-line) !important; }
+:root .hero::before { background: radial-gradient(circle, rgba(0,80,232,.28), transparent 69%) !important; }
+:root .line--accent { background: linear-gradient(100deg, #8fb2ff, #6fe3ff 45%, #b9a6ff 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root .hero__note { border-color: rgba(111,227,255,.25) !important; background: rgba(111,227,255,.05) !important; color: #bfe9ff !important; font-size: .68rem !important; }
+:root .hero__service-rail a { background: rgba(255,255,255,.04); border: 1px solid var(--holo-line); color: var(--holo-muted); backdrop-filter: blur(8px); }
+:root .hero__service-rail a:hover { color: #fff; border-color: rgba(111,227,255,.55); box-shadow: 0 0 22px rgba(77,134,255,.35); }
+
+.holo-stage { position: relative; isolation: isolate; }
+.holo-stage .frame { position: relative; z-index: 2; box-shadow: 0 0 0 1px rgba(111,227,255,.22), 0 40px 90px -30px rgba(0,0,0,.8), 0 0 80px -20px rgba(77,134,255,.55) !important; }
+.holo-orb {
+  position: absolute; z-index: 0; left: 50%; top: 50%; width: 118%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  border-radius: 50%; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(111,227,255,.18), transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(0,80,232,.35), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(138,107,255,.22), transparent 70%);
+  filter: blur(6px);
+  animation: holo-breathe 7s ease-in-out infinite;
+}
+.holo-ring {
+  position: absolute; z-index: 1; left: 50%; top: 50%; aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  border: 1px solid rgba(150,180,255,.22); transform: translate(-50%, -50%) rotateX(72deg);
+}
+.holo-ring--a { width: 112%; animation: holo-spin 26s linear infinite; border-top-color: rgba(111,227,255,.8); box-shadow: 0 0 24px rgba(77,134,255,.25); }
+.holo-ring--b { width: 134%; animation: holo-spin 40s linear infinite reverse; border-left-color: rgba(138,107,255,.7); }
+.holo-chip {
+  position: absolute; z-index: 3; display: flex; align-items: center; gap: .55rem;
+  padding: .55rem .8rem; border-radius: .8rem;
+  background: rgba(10, 14, 36, .62); border: 1px solid rgba(150,180,255,.22);
+  box-shadow: 0 18px 40px -18px rgba(0,0,0,.8), 0 0 24px -6px rgba(77,134,255,.45);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  font: 500 .74rem/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: #dfe7ff; white-space: nowrap;
+  animation: holo-float 6s ease-in-out infinite;
+}
+.holo-chip i { width: .5rem; height: .5rem; border-radius: 50%; background: var(--holo-cyan); box-shadow: 0 0 12px var(--holo-cyan); font-style: normal; }
+.holo-chip--1 { left: -6%; top: 6%; }
+.holo-chip--2 { right: 6%; top: -7%; animation-delay: -1.5s; }
+.holo-chip--2 i { background: #b9a6ff; box-shadow: 0 0 12px #b9a6ff; }
+.holo-chip--3 { left: -8%; bottom: 4%; animation-delay: -3s; }
+.holo-chip--3 i { background: #8fb2ff; box-shadow: 0 0 12px #8fb2ff; }
+.holo-chip--4 { right: 8%; bottom: -8%; animation-delay: -4.5s; }
+@keyframes holo-spin { to { transform: translate(-50%, -50%) rotateX(72deg) rotateZ(360deg); } }
+@keyframes holo-breathe { 0%, 100% { opacity: .85; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); } }
+@keyframes holo-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+
+@media (max-width: 1099px) {
+  .holo-chip--1, .holo-chip--3 { left: 2%; }
+  .holo-chip--2, .holo-chip--4 { right: 2%; }
+}
+@media (max-width: 700px) {
+  .holo-chip { display: none; }
+  .holo-ring--b { display: none; }
+  .holo-backdrop__cursor { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-backdrop__stars, .holo-orb, .holo-ring, .holo-chip { animation: none !important; }
+  .holo-backdrop__cursor { display: none; }
+}
+html[data-motion-paused='true'] .holo-backdrop__stars,
+html[data-motion-paused='true'] .holo-orb,
+html[data-motion-paused='true'] .holo-ring,
+html[data-motion-paused='true'] .holo-chip { animation-play-state: paused !important; }
+
+/* ---- Pass 2: clean-up after visual review ------------------------------ */
+/* Old light "transition bands" between sections: not needed in one dark space. */
+:root .work-section::after, :root .services-overview::after, :root .experts-section::after, :root .pricing-preview::after { display: none !important; }
+:root .work-section, :root .services-overview, :root .experts-section, :root .pricing-preview { padding-bottom: clamp(4.5rem, 8vw, 7rem) !important; }
+:root .footer { padding-top: 3.5rem !important; }
+:root .footer::before { opacity: .35; }
+
+/* Small controls that were white */
+:root .menu-btn, :root .motion-toggle { background: rgba(255,255,255,.05) !important; color: var(--holo-text) !important; border-color: var(--holo-line) !important; }
+:root .chip, :root .chips .chip, :root .service-card__goals li, :root .traits li {
+  background: rgba(255,255,255,.04) !important; border-color: rgba(160,180,255,.22) !important; color: #c9d4ff !important;
+}
+:root .traits li { border-color: rgba(213,181,106,.45) !important; color: #f1dfb0 !important; }
+
+/* Pricing */
+:root .pricing-nav__item { color: var(--holo-muted); background: transparent; }
+:root .pricing-nav__item:hover { color: #fff; background: rgba(255,255,255,.04); }
+:root .pricing-nav__item[aria-pressed='true'] {
+  background: linear-gradient(135deg, rgba(46,49,146,.65), rgba(0,80,232,.45)) !important;
+  color: #fff !important; border-color: rgba(111,227,255,.35) !important; box-shadow: 0 0 24px -4px rgba(77,134,255,.5) !important;
+}
+:root .pricing-tier__offer-label, :root .pricing-tier__offer .pricing-tier__price { color: #9fe8ff !important; }
+:root .pricing-tier__price { color: var(--holo-text); }
+
+/* Process list: hide default list numbers (the design shows its own) */
+:root .process-steps { list-style: none; padding-left: 0; }
+:root .process-steps > li::marker { content: ''; }
+
+/* Logo sizing on small screens (header and footer) */
+:root .footer .logo { max-width: 100%; }
+:root .footer .logo img:last-child { width: min(289px, 58vw) !important; height: auto !important; }
+:root .footer .logo img:first-child { width: min(83px, 17vw) !important; height: auto !important; }
+@media (max-width: 600px) {
+  :root .header .logo { gap: 10px !important; }
+  :root .header .logo img:first-child { height: 36px !important; }
+  :root .header .logo img:last-child { height: 24px !important; }
+}

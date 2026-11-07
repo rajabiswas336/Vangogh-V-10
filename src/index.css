@@ -1,0 +1,96 @@
+/*
+ * Working interface palette drawn from the Master AI Brand Bible.
+ * These values remain provisional until the owner confirms official colour specs.
+ */
+:root {
+  color-scheme: light;
+  --surface: #f2f5fa;
+  --paper: #ffffff;
+  --ink: #10182b;
+  --ink-soft: #56617a;
+  --blue: #2864d7;
+  --blue-light: #76a8ff;
+  --blue-glow: rgba(40, 100, 215, 0.18);
+  --violet: #76a8ff; /* was violet #856cff, now brand light blue */
+  --violet-light: #b9d0ff;
+  --gold: #d5b56a;
+  --line: rgba(16, 24, 43, 0.12);
+  --line-dark: rgba(242, 245, 250, 0.16);
+  /* Provisional type system (2026-10-31): Open Sans for display, text and labels. */
+  --serif: 'Open Sans', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --sans: 'Open Sans', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Open Sans', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --max: 1200px;
+  --gutter: clamp(1.25rem, 5vw, 4.5rem);
+  --section-space: clamp(5rem, 9vw, 8.5rem);
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.75rem;
+  --radius-xl: 2.25rem;
+  --shadow-soft: 0 18px 60px rgba(16, 24, 43, 0.1);
+  --shadow-blue: 0 20px 58px rgba(40, 100, 215, 0.16);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-quick: 140ms;
+  --motion-standard: 240ms;
+  --motion-reveal: 600ms;
+  --motion-media: 600ms;
+  --motion-orbit: 28s;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 78% 6%, rgba(118,168,255,.055), transparent 38rem), radial-gradient(ellipse at 6% 56%, rgba(40,100,215,.045), transparent 34rem), linear-gradient(180deg, #fbfcff, var(--surface) 60rem);
+  color: var(--ink);
+  font: 400 1rem/1.65 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img { display: block; max-width: 100%; height: auto; }
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+a { color: var(--blue); text-underline-offset: 0.2em; }
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: 3px solid var(--focus-ring, var(--blue)); outline-offset: 3px; box-shadow: none; }
+
+.container { width: min(calc(100% - var(--gutter) - var(--gutter)), var(--max)); margin-inline: auto; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip {
+  position: fixed; left: 1rem; top: 0.75rem; z-index: 100;
+  padding: 0.7rem 1rem; transform: translateY(-160%);
+  border-radius: var(--radius-sm); background: var(--ink); color: #fff;
+  transition: transform var(--motion-standard) var(--ease-out);
+}
+.skip:focus { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+button:not(:disabled), a { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled) { transition-property: scale; transition-duration: 90ms; transition-timing-function: var(--ease-out); }
+button:not(:disabled):active { scale: .98; }
+html[data-motion-paused='true'] *, html[data-motion-paused='true'] *::before, html[data-motion-paused='true'] *::after {
+  animation-play-state: paused !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+.vp-reveal { transition: opacity var(--motion-reveal) var(--ease-out), transform var(--motion-reveal) var(--ease-out); }
+.vp-reveal--pending { opacity: 0; transform: translateY(12px); }
+.vp-reveal--in { opacity: 1; transform: translateY(0); }
+.hero, .work-section, .process-section, .experts-section, .cta, .footer { --focus-ring: var(--blue-light); }
+@media (prefers-reduced-motion: reduce) {
+  .vp-reveal { transition: none !important; }
+  .vp-reveal--pending { opacity: 1; transform: none; }
+}

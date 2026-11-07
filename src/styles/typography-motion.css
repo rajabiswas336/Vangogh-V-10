@@ -1,0 +1,479 @@
+/**
+ * Vangogh Productions - Expressive Typography & Purposeful Motion System (Batch 28)
+ *
+ * Architecture Principles:
+ * 1. Fluid Typography: Modular clamp() scaling across viewports without breakpoint jumps.
+ * 2. Optical Tracking: Tight tracking for display serifs, loose tracking for uppercase tags/metadata.
+ * 3. Purposeful Motion: Every animation serves focus, feedback, orientation, or narrative pacing.
+ * 4. Contrast Safety: High-contrast gold (#8c6e26) on light ivory; radiant gold (#d5b56a) on deep navy.
+ * 5. Strict Accessibility: 100% compliant with prefers-reduced-motion and data-motion-paused toggle.
+ *
+ * NOTE: The interface palette (#10182B, #2864D7, #76A8FF, #D5B56A, #F2F5FA) and font stacks remain
+ * PROVISIONAL working recommendations until formal confirmation by the brand owner.
+ */
+
+:root {
+  /* Fluid Typographic Scale */
+  --text-2xs: clamp(0.64rem, 0.6rem + 0.2vw, 0.72rem);
+  --text-xs: clamp(0.72rem, 0.68rem + 0.22vw, 0.8rem);
+  --text-sm: clamp(0.82rem, 0.78rem + 0.24vw, 0.92rem);
+  --text-base: clamp(0.96rem, 0.91rem + 0.28vw, 1.06rem);
+  --text-lg: clamp(1.12rem, 1.02rem + 0.5vw, 1.34rem);
+  --text-xl: clamp(1.28rem, 1.15rem + 0.7vw, 1.62rem);
+  --text-2xl: clamp(1.65rem, 1.4rem + 1.25vw, 2.25rem);
+  --text-3xl: clamp(2.2rem, 1.75rem + 2.25vw, 3.8rem);
+  --text-hero: clamp(3.2rem, 2.3rem + 4.5vw, 6.2rem);
+
+  /* Optical Letter Spacing */
+  --tracking-tighter: -0.055em;
+  --tracking-tight: -0.035em;
+  --tracking-snug: -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.055em;
+  --tracking-widest: 0.13em;
+
+  /* Leading / Line Heights */
+  --leading-none: 0.96;
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-normal: 1.65;
+  --leading-relaxed: 1.75;
+
+  /* Contrast-Safe Accent Color Tokens (Provisional) */
+  --gold-accent: #d5b56a;
+  --gold-accent-text: #8c6e26; /* >= 4.5:1 on light ivory/white surfaces */
+  --gold-glow: rgba(213, 181, 106, 0.24);
+  --blue-accent-glow: rgba(40, 100, 215, 0.22);
+  --blue-light-accent: #76a8ff;
+  --surface-dark-border: rgba(174, 195, 255, 0.16);
+}
+
+/* ==========================================================================
+   1. EXPRESSIVE TYPOGRAPHY
+   ========================================================================== */
+
+/* Editorial Headings */
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-wrap: balance;
+}
+
+/* Eyebrows and Metadata Tags */
+.eyebrow,
+.tag,
+.service-card__index,
+.process-step__number,
+.hero__note {
+  letter-spacing: var(--tracking-widest);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section Headings with Purposeful Accent Underline Draw & Masked Reveal */
+.section-head {
+  position: relative;
+}
+
+.section-head h2 {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  letter-spacing: var(--tracking-tight);
+}
+
+.section-head__mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.section-head__title {
+  display: block;
+  transform: translateY(112%);
+  opacity: 0;
+  transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1) 80ms, opacity 260ms ease 80ms;
+  will-change: transform, opacity;
+}
+
+.section-head.vp-reveal--in .section-head__title,
+.vp-reveal--in .section-head .section-head__title {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.section-head h2::after {
+  content: '';
+  display: block;
+  width: 3.2rem;
+  height: 2px;
+  margin-top: 0.65rem;
+  background: linear-gradient(90deg, var(--blue, #2864d7), var(--gold, #d5b56a));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 550ms var(--ease-out) 240ms;
+}
+
+/* Trigger draw when SectionHead reveals */
+.section-head.vp-reveal--in h2::after,
+.vp-reveal--in .section-head h2::after {
+  transform: scaleX(1);
+}
+
+/* Dark Section Accent Underlines (Process, Experts, CTA) */
+.process-section .section-head h2::after,
+.experts-section .section-head h2::after {
+  background: linear-gradient(90deg, var(--gold, #d5b56a), var(--blue-light, #76a8ff));
+}
+
+/* ==========================================================================
+   2. HERO KINETIC TYPOGRAPHY & SCENE STAGGERING
+   ========================================================================== */
+
+.hero__title {
+  letter-spacing: var(--tracking-tighter);
+  animation: none !important;
+}
+
+.hero__title .line {
+  display: block;
+  overflow: visible;
+}
+
+.kinetic-line {
+  display: block;
+}
+
+.kinetic-word-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.kinetic-word {
+  display: inline-block;
+  transform: translateY(125%);
+  opacity: 0;
+  animation: kinetic-word-rise 820ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes kinetic-word-rise {
+  0% {
+    transform: translateY(125%);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Accent gold rule beneath the hero title */
+.hero__rule {
+  display: block;
+  width: 4.5rem;
+  height: 2px;
+  margin-block: 1.35rem 0.35rem;
+  background: linear-gradient(90deg, var(--gold, #d5b56a), rgba(213, 181, 106, 0.08));
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: hero-rule-draw 550ms var(--ease-out) 1180ms both;
+}
+
+@keyframes hero-rule-draw {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* Refined Hero Staggering */
+.hero__copy > * {
+  animation: hero-rise 650ms var(--ease-out) both;
+}
+
+.hero__note {
+  animation-delay: 0ms;
+}
+
+.hero__title {
+  animation: none !important;
+}
+
+.hero__rule {
+  animation-delay: 1180ms;
+}
+
+.hero__lede {
+  animation-delay: 1320ms;
+}
+
+.hero__actions {
+  animation-delay: 1520ms;
+}
+
+.hero__service-rail {
+  animation-delay: 1680ms;
+}
+
+/* ==========================================================================
+   3. REVEAL SYSTEM EXTENSIONS (Minimal Variant Support)
+   ========================================================================== */
+
+/* Variant: Block reveal */
+.vp-reveal--block.vp-reveal--pending {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+}
+
+.vp-reveal--block.vp-reveal--in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Variant: Stagger container */
+.vp-reveal--stagger > :nth-child(1) { transition-delay: 0ms; }
+.vp-reveal--stagger > :nth-child(2) { transition-delay: 80ms; }
+.vp-reveal--stagger > :nth-child(3) { transition-delay: 160ms; }
+.vp-reveal--stagger > :nth-child(4) { transition-delay: 240ms; }
+.vp-reveal--stagger > :nth-child(5) { transition-delay: 320ms; }
+
+/* ==========================================================================
+   4. SECTION PERSONALITIES & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Services Personality: Staggered entry & refined card hover lift */
+.service-card {
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out), border-color 220ms ease;
+  will-change: transform;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(40, 100, 215, 0.09);
+  border-color: rgba(40, 100, 215, 0.28);
+}
+
+.service-card:hover .service-card__index {
+  color: var(--blue, #2864d7);
+}
+
+/* Process Personality: Gold & blue connecting line */
+.process-steps::before {
+  background: linear-gradient(90deg, rgba(213, 181, 106, 0.9), rgba(118, 168, 255, 0.8) 60%, rgba(194, 166, 255, 0.25)) !important;
+}
+
+.process-step {
+  transition: border-color 240ms ease;
+}
+
+.process-step:hover {
+  border-top-color: rgba(213, 181, 106, 0.45);
+}
+
+/* Experts Personality: Team portrait framing & hover micro-interaction */
+.expert__portrait {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.expert__portrait img {
+  transition: transform 450ms var(--ease-out);
+  will-change: transform;
+}
+
+.card--expert:hover .expert__portrait img {
+  transform: scale(1.035);
+}
+
+/* Raja Biswas Creative AI Presentation (Reference: Screenshot 2026-10-17 214644.jpg) */
+.card--expert-raja {
+  position: relative;
+  border-color: rgba(118, 168, 255, 0.28) !important;
+  background: linear-gradient(155deg, rgba(16, 24, 43, 0.95), rgba(40, 100, 215, 0.12) 80%, rgba(118,168,255, 0.14)) !important;
+  box-shadow: 0 10px 32px rgba(4, 8, 20, 0.45), inset 0 1px 0 rgba(185, 203, 255, 0.18) !important;
+}
+
+.card--expert-raja:hover {
+  border-color: rgba(118, 168, 255, 0.55) !important;
+  box-shadow: 0 16px 44px rgba(40, 100, 215, 0.28), 0 0 28px rgba(118,168,255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.expert__portrait--raja {
+  position: relative;
+  background: radial-gradient(circle at 50% 30%, rgba(40, 100, 215, 0.28), transparent 70%);
+}
+
+.expert__portrait--raja::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(118, 168, 255, 0.25);
+  box-shadow: inset 0 0 20px rgba(40, 100, 215, 0.2);
+  pointer-events: none;
+}
+
+.expert__tech-badge {
+  position: absolute;
+  bottom: 0.65rem;
+  left: 0.65rem;
+  right: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid rgba(118, 168, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(8, 13, 28, 0.88);
+  backdrop-filter: blur(8px);
+  color: #c4d8ff;
+  font-size: 0.64rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.expert__tech-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #76a8ff;
+  box-shadow: 0 0 8px #76a8ff;
+  animation: tech-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes tech-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); box-shadow: 0 0 12px #76a8ff; }
+}
+
+/* CTA Band: Typographic emphasis & button glow */
+.cta h2 {
+  letter-spacing: var(--tracking-tight);
+}
+
+.cta .btn--gold {
+  transition: transform 140ms var(--ease-out), box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.cta .btn--gold:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(213, 181, 106, 0.32);
+}
+
+/* ==========================================================================
+   5. STRICT REDUCED MOTION & PAUSE TOGGLE COMPLIANCE
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .section-head h2::after,
+  .hero__rule,
+  .process-steps::before {
+    transform: scaleX(1) !important;
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .kinetic-word {
+    transform: none !important;
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .kinetic-word-mask,
+  .section-head__mask {
+    overflow: visible !important;
+  }
+
+  .section-head__title {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .expert__tech-dot {
+    animation: none !important;
+  }
+
+  .hero__copy > *,
+  .service-card,
+  .card--expert,
+  .cta .btn--gold,
+  .expert__portrait img {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .service-card:hover,
+  .card--expert:hover .expert__portrait img,
+  .cta .btn--gold:hover,
+  .hero .btn:hover,
+  .hero__service-rail a:hover {
+    transform: none !important;
+  }
+}
+
+html[data-motion-paused='true'] .section-head h2::after,
+html[data-motion-paused='true'] .hero__rule,
+html[data-motion-paused='true'] .process-steps::before {
+  transform: scaleX(1) !important;
+  transition: none !important;
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+html[data-motion-paused='true'] .kinetic-word {
+  transform: none !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+html[data-motion-paused='true'] .kinetic-word-mask,
+html[data-motion-paused='true'] .section-head__mask {
+  overflow: visible !important;
+}
+
+html[data-motion-paused='true'] .section-head__title {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+html[data-motion-paused='true'] .expert__tech-dot {
+  animation: none !important;
+}
+
+html[data-motion-paused='true'] .hero__copy > *,
+html[data-motion-paused='true'] .service-card,
+html[data-motion-paused='true'] .card--expert,
+html[data-motion-paused='true'] .cta .btn--gold,
+html[data-motion-paused='true'] .expert__portrait img {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+html[data-motion-paused='true'] .service-card:hover,
+html[data-motion-paused='true'] .card--expert:hover .expert__portrait img,
+html[data-motion-paused='true'] .cta .btn--gold:hover,
+html[data-motion-paused='true'] .hero .btn:hover,
+html[data-motion-paused='true'] .hero__service-rail a:hover {
+  transform: none !important;
+}

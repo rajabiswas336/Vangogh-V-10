@@ -1,0 +1,41 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- Website setup (2026-11-07) ---
+# Build output and local copies
+dist
+.local-backups
+qa-screenshots
+qa-reports
+src - Copy
+*.zip
+
+# Raw, uncompressed masters stay on your PC only. The compressed copies the
+# site uses live in public/ and are committed.
+media-originals/
+*.MOV
+*.mov
+# Portfolio originals: the site uses the web copies in public/Media/Portfolio/web.
+public/Portfolio Samples/
